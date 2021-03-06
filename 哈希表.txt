@@ -1,0 +1,44 @@
+哈希表也叫散列表
+对应的映射函数叫做 哈希函数
+
+1.对于任意元素的映射
+遇到负数或者非常大的整数、字符串、浮点数、数组
+可以将key值（大整数、字符串、浮点数）转换为整数再对 表长 取余，从而关键字值 被转换为 哈希表 表长范围内的整数
+
+映射后可能存在冲突，对应的解决办法
+拉链法：
+将所有哈希函数 结果相同 的结点连接在 同一个 单链表 中
+如果选定的哈希表 长度为 m,可以将哈希表定义为一个长度为m的指针数组t[0...m-1]，里面的每个指针指向哈希函数结果相同的单链表
+a.插入value
+将元素value插入哈希表，哈希函数值为 hash_key,会将value对一个的结点以 头插法 的方式插入到t[hash_key]为头结点的单链表中
+
+b.查找value
+如果元素value的哈希函数值为hash_key,遍历t[hash_key]为头指针的单链表，查找链表的各个结点的值是不是value
+
+哈希表即为普通的单链表构成
+struct ListNode{
+    int val;
+    ListNode *next;
+    ListNode（int x）:val(x),next(nullptr){}
+}
+
+int hash_func(int key,int table_len){
+    return key % table_len;
+}
+
+void insert(ListNode *hash_table[],ListNode *node,int table_len){
+    int hash_key = hash_func(node->val,table_len);
+    node->next = hash_table[hash_key];
+    hash_table[hash_key] = node;
+}
+
+bool search(ListNode *hash_table,int value,int table_len){
+    int hash_key = hash_func(value,table_len);
+    ListNode *head = hash_table[hash_key];
+    while(head){
+        if(head->val == value)
+            return false;
+        head = head->next;
+    }
+    return false;
+}

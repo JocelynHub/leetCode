@@ -1,0 +1,81 @@
+二叉树层次遍历
+效果上来讲 是按照 一层一层来访问这个树
+
+二叉树 层次遍历 又称为 宽度优先搜索，按照树的层次 依次访问树的节点
+层次遍历使用 队列 对遍历节点进行存储，先进入队列的点 优先遍历其 左孩子 右孩子
+
+设置 队列Q
+将根节点push 进Q
+while(Q不空)
+{
+    取出 队列 头节点 node
+    对node进行访问
+    将node的左孩子 右孩子 放到 队列中
+}
+
+二叉查找（排序）树
+二叉查找树具有如下性质：
+如果左子树不空，左子树上所有结点 均  <= 根结点的值
+如果右子树不空，右子树上所有结点 均  >= 根结点的值
+左子树 和 右子树 也分别为 二叉排序树
+等于的情况 只能出现在左子树或者右子树的一侧
+
+二叉查找树的中序遍历是从小到大的，所以它也叫 二叉排序树
+二叉查找树种插入结点，插入后仍然是二叉查找树
+void BST_insert(TreeNode *node,TreeNode * insert_node)
+{
+    if(insert_node->val < node->val)
+    {
+        if(node->left)
+        {
+            BST_insert(node->left,insert_node);
+        }
+        else
+        {
+            node->left = insert_node;
+        }
+    }
+    else
+    {
+        if(node->right)
+        {
+            BST_insert(node->right,insert_node);
+        }
+        else
+        {
+            node->right = insert_node;
+        }
+    }
+}
+
+查询某个值是否在二叉查找树中
+bool BST_search(TreeNode *node,int value)
+{
+    if(value == node->val)
+    {
+        return true;
+    }
+    //需要考虑 左子树 右子树是否存在的情况
+
+    if(value < node->val)
+    {
+        if(node->left)
+        {
+            return BST_search(node->left,value);
+        }
+        else
+            return false;
+    }
+    else
+    {
+        if(node->right)
+        {
+            return BST_search(node->right,value);
+        }
+        else
+            return false;
+    }
+}
+
+对二叉查找树进行 前序遍历，将遍历得到的结果按顺序重新构造一个新的二叉查找树，新的二叉查找树与原二叉查找树一致
+只有前序可以
